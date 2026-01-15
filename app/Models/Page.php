@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class Page extends Model
@@ -51,7 +51,7 @@ class Page extends Model
     public function field(string $name, mixed $default = null): mixed
     {
         $fieldValue = $this->fieldValues()
-            ->whereHas('templateField', fn($q) => $q->where('name', $name))
+            ->whereHas('templateField', fn ($q) => $q->where('name', $name))
             ->with('templateField')
             ->first();
 
