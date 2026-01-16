@@ -1,0 +1,99 @@
+@import 'tailwindcss';
+
+@source '../views';
+
+/* Waffle Theme Base Styles */
+@layer base {
+    .waffle-body {
+        font-family: 'Outfit', sans-serif;
+    }
+}
+
+/* Waffle Theme Components */
+@layer components {
+    .waffle-pattern {
+        background-image: 
+            linear-gradient(to right, rgba(251, 191, 36, 0.1) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(251, 191, 36, 0.1) 1px, transparent 1px);
+        background-size: 40px 40px;
+    }
+
+    .waffle-shadow {
+        box-shadow: 6px 6px 0 #1f2937;
+        transition: all 0.15s ease;
+    }
+
+    .waffle-shadow:hover {
+        box-shadow: 8px 8px 0 #1f2937;
+        transform: translate(-2px, -2px);
+    }
+
+    .squiggle {
+        text-decoration: underline wavy #fbbf24;
+        text-underline-offset: 8px;
+    }
+
+    /* Prose styles for rich text content */
+    .waffle-prose h2 {
+        @apply text-2xl font-bold text-gray-800 mt-10 mb-4;
+    }
+
+    .waffle-prose h3 {
+        @apply text-xl font-bold text-gray-800 mt-8 mb-3;
+    }
+
+    .waffle-prose p {
+        @apply text-gray-700 leading-relaxed mb-6;
+    }
+
+    .waffle-prose ul,
+    .waffle-prose ol {
+        @apply mb-6 pl-6 list-none;
+    }
+
+    .waffle-prose li {
+        @apply text-gray-700 mb-2;
+    }
+
+    /* Standard HTML lists */
+    .waffle-prose ul > li {
+        @apply list-disc list-inside;
+    }
+
+    .waffle-prose ol > li:not([data-list]) {
+        @apply list-decimal list-inside;
+    }
+
+    /* Quill 2.x outputs <ol> with <li data-list="bullet|ordered"> */
+    .waffle-prose li[data-list="bullet"] {
+        @apply list-disc list-inside;
+    }
+
+    .waffle-prose li[data-list="ordered"] {
+        @apply list-decimal list-inside;
+    }
+
+    .waffle-prose a {
+        @apply text-amber-600 font-semibold underline underline-offset-2 hover:text-amber-700;
+    }
+
+    .waffle-prose blockquote {
+        @apply border-l-4 border-amber-400 pl-6 italic text-gray-600 my-6;
+    }
+
+    .waffle-prose code {
+        @apply bg-amber-100 text-gray-800 px-2 py-1 rounded text-sm font-mono;
+    }
+
+    .waffle-prose pre {
+        @apply bg-gray-800 text-amber-50 p-6 rounded-xl overflow-x-auto mb-6;
+    }
+
+    .waffle-prose pre code {
+        @apply bg-transparent text-amber-50 p-0;
+    }
+
+    .waffle-prose img {
+        @apply rounded-xl border-3 border-gray-800 my-8;
+    }
+}
