@@ -64,3 +64,14 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+/* Quill Editor */
+.ql-toolbar.ql-snow {
+    @apply border-zinc-200 dark:border-zinc-700 rounded-t-lg;
+}
+.ql-container.ql-snow {
+    @apply border-zinc-200 dark:border-zinc-700 rounded-b-lg;
+}
+.ql-editor {
+    @apply min-h-[150px];
+}

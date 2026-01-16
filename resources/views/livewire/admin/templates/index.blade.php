@@ -73,7 +73,11 @@ new #[Title('Templates')] class extends Component {
                     <flux:modal.close>
                         <flux:button variant="ghost">{{ __('Cancel') }}</flux:button>
                     </flux:modal.close>
-                    <flux:button variant="danger" wire:click="delete({{ $template->id }})">
+                    <flux:button
+                        variant="danger" 
+                        wire:click="delete({{ $template->id }})"
+                        x-on:click="$flux.modal('delete-{{ $template->id }}').close()"
+                    >
                         {{ __('Delete') }}
                     </flux:button>
                 </div>
