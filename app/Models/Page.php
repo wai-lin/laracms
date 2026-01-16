@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class Page extends Model
@@ -36,6 +38,52 @@ class Page extends Model
                 $page->slug = Str::slug($page->title);
             }
         });
+    }
+
+    /**
+     * Get all published pages for a template.
+     *
+     * @param  string  $template  Template slug or name
+     * @param  int|null  $perPage  Items per page (null = no pagination)
+     */
+    public static function byTemplate(string $template, ?int $perPage = null): Collection|LengthAwarePaginator
+    {
+        $page = static::published()
+            ->whereHas(
+                'template',
+                fn ($q) => $q
+                    ->where('slug', $template)
+                    ->orWhere('name', $template)
+            )
+            ->ordered();
+
+        return $perPage
+        ? $page->paginate($perPage)
+        : $page->get();
+    }
+
+    /**
+     * Get a single published page by slug.
+     *
+     * @param  string  $slug  Page slug
+     */
+    public static function bySlug(string $slug): ?Page
+    {
+        return static::published()
+            ->where('slug', $slug)
+            ->first();
+    }
+
+    /**
+     * Get a single published page by slug or throw 404.
+     *
+     * @param  string  $slug  Page slug
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
+    public static function bySlugOrFail(string $slug): Page
+    {
+        return static::published()->where('slug', $slug)->firstOrFail();
     }
 
     public function template(): BelongsTo
