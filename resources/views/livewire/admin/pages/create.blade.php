@@ -95,7 +95,7 @@ new #[Title('Create Page')] class extends Component {
         </flux:select>
 
         @if ($page_template_id)
-            <flux:input wire:model.live="title" :label="__('Title')" required />
+            <flux:input wire:model.live.debounce.300ms="title" :label="__('Title')" required />
             <flux:input wire:model="slug" :label="__('Slug')" required />
             <flux:textarea wire:model="meta_description" :label="__('Meta Description')" rows="2" />
             <flux:select wire:model.live="status" :label="__('Status')">

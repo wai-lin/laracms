@@ -31,7 +31,7 @@ new #[Title('Create Template')] class extends Component {
 <div class="max-w-2xl">
     <flux:heading size="xl" class="mb-6">{{ __('Create Template') }}</flux:heading>
     <form wire:submit="save" class="space-y-6">
-        <flux:input wire:model.live="name" :label="__('Name')" placeholder="e.g. Landing Page" required />
+        <flux:input wire:model.live.debounce.300ms="name" :label="__('Name')" placeholder="e.g. Landing Page" required />
         <flux:input wire:model="slug" :label="__('Slug')" placeholder="e.g. landing-page" required />
         <flux:textarea wire:model="description" :label="__('Description')" rows="3" />
         <div class="flex gap-2">
