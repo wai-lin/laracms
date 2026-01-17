@@ -1,11 +1,15 @@
 <?php
 use App\Models\Page;
+use App\Models\PageTemplate;
 use Livewire\Volt\Component;
 use Livewire\Attributes\{Title, Url};
 
 new #[Title('Pages')] class extends Component {
     #[Url]
     public string $status = '';
+
+    #[Url]
+    public string $template = '';
 
     public function delete(int $id): void
     {
@@ -20,8 +24,13 @@ new #[Title('Pages')] class extends Component {
             $query->where('status', $this->status);
         }
 
+        if ($this->template) {
+            $query->where('page_template_id', $this->template);
+        }
+
         return [
             'pages' => $query->get(),
+            'templates' => PageTemplate::orderBy('name')->get(),
         ];
     }
 };
@@ -34,12 +43,19 @@ new #[Title('Pages')] class extends Component {
             {{ __('Create Page') }}
         </flux:button>
     </div>
-    <div class="mb-4">
+    <div class="mb-4 flex gap-4">
         <flux:select wire:model.live="status" class="w-48">
             <flux:select.option value="">All Statuses</flux:select.option>
             <flux:select.option value="draft">Draft</flux:select.option>
             <flux:select.option value="published">Published</flux:select.option>
             <flux:select.option value="scheduled">Scheduled</flux:select.option>
+        </flux:select>
+
+         <flux:select wire:model.live="template" class="w-48">
+            <flux:select.option value="">All Templates</flux:select.option>
+            @foreach($templates as $t)
+                <flux:select.option :value="$t->id">{{ $t->name }}</flux:select.option>
+            @endforeach
         </flux:select>
     </div>
     <table class="w-full text-left text-sm">

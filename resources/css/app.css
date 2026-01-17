@@ -73,5 +73,5 @@ select:focus[data-flux-control] {
     @apply border-zinc-200 dark:border-zinc-700 rounded-b-lg;
 }
 .ql-editor {
-    @apply min-h-[150px];
+    @apply min-h-[150px] max-h-[500px] overflow-y-auto;
 }
