@@ -1,4 +1,4 @@
-<x-layouts.waffle title="Blog">
+<x-layouts.waffle title="Blogs">
     {{-- Header --}}
     <div class="text-center mb-12">
         <h1 class="text-4xl lg:text-5xl font-black text-gray-800 mb-4">
