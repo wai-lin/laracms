@@ -6,12 +6,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ? $title . ' - The Waffle Studio' : 'The Waffle Studio' }}</title>
+
     @if($meta_description)
         <meta name="description" content="{{ $meta_description }}">
     @endif
+    
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=outfit:400,600,800,900" rel="stylesheet" />
     @vite(['resources/css/waffle.css', 'resources/js/app.js'])
+
+    @production
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="454e19b1-cb4b-4a3b-8432-34e3f986845f"></script>
+    @endproduction
 </head>
 <body class="min-h-screen bg-amber-50 waffle-pattern waffle-body">
     {{-- Navigation --}}
