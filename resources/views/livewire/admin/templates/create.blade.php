@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\PageTemplate;
-use Livewire\Volt\Component;
+use Livewire\Component;
 use Livewire\Attributes\Title;
 use Illuminate\Support\Str;
 

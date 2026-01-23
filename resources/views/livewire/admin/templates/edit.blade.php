@@ -2,7 +2,7 @@
 
 use App\Models\PageTemplate;
 use App\Models\PageTemplateField;
-use Livewire\Volt\Component;
+use Livewire\Component;
 use Livewire\Attributes\Title;
 use Illuminate\Support\Str;
 
