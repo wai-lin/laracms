@@ -31,7 +31,7 @@
                     @if($post->field('cover_image'))
                         <div class="aspect-video overflow-hidden border-b-3 border-gray-800">
                             <img 
-                                src="{{ Storage::disk('s3')->temporaryUrl($post->field('cover_image'), now()->addHours(1)) }}" 
+                                src="{{ StorageHelper::temporaryUrl($post->field('cover_image')) }}" 
                                 alt="{{ $post->title }}"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             >
