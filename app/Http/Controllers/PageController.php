@@ -8,7 +8,7 @@ class PageController extends Controller
 {
     public function show(string $slug)
     {
-        $page = Page::bySlugOrFail($slug);
+        $page = Page::bySlug($slug) ?? abort(404);
         // Try template-specific view, fallback to default
         $templateView = 'templates.'.$page->template->slug;
         $view = view()->exists($templateView) ? $templateView : 'templates.default';

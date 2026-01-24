@@ -49,6 +49,7 @@ class Page extends Model
     public static function byTemplate(string $template, ?int $perPage = null): Collection|LengthAwarePaginator
     {
         $page = static::published()
+            ->with(['template', 'template.fields', 'fieldValues.templateField'])
             ->whereHas(
                 'template',
                 fn ($q) => $q
@@ -70,6 +71,7 @@ class Page extends Model
     public static function bySlug(string $slug): ?Page
     {
         return static::published()
+            ->with(['template', 'template.fields', 'fieldValues.templateField'])
             ->where('slug', $slug)
             ->first();
     }
@@ -83,7 +85,10 @@ class Page extends Model
      */
     public static function bySlugOrFail(string $slug): Page
     {
-        return static::published()->where('slug', $slug)->firstOrFail();
+        return static::published()
+            ->with(['template', 'template.fields', 'fieldValues.templateField'])
+            ->where('slug', $slug)
+            ->firstOrFail();
     }
 
     public function template(): BelongsTo
@@ -96,8 +101,27 @@ class Page extends Model
         return $this->hasMany(PageFieldValue::class);
     }
 
+    /**
+     * Get a field value by name (uses eager-loaded data to avoid N+1 queries)
+     */
     public function field(string $name, mixed $default = null): mixed
     {
+        // If fieldValues are already loaded, use them
+        if ($this->relationLoaded('fieldValues')) {
+            $fieldValue = $this->fieldValues
+                ->first(fn ($fv) => $fv->templateField?->name === $name);
+
+            if ($fieldValue) {
+                return $this->castFieldValue(
+                    $fieldValue->value,
+                    $fieldValue->templateField?->type ?? 'text'
+                );
+            }
+
+            return $default;
+        }
+
+        // Fallback for non-eager-loaded scenarios
         $fieldValue = $this->fieldValues()
             ->whereHas('templateField', fn ($q) => $q->where('name', $name))
             ->with('templateField')
@@ -117,16 +141,18 @@ class Page extends Model
     {
         $fields = [];
 
-        $this->fieldValues()
-            ->with('templateField')
-            ->get()
-            ->each(function ($fieldValue) use (&$fields) {
-                $name = $fieldValue->templateField->name;
-                $fields[$name] = $this->castFieldValue(
-                    $fieldValue->value,
-                    $fieldValue->templateField->type
-                );
-            });
+        // Use already-loaded fieldValues if available
+        $fieldValuesList = $this->relationLoaded('fieldValues')
+            ? $this->fieldValues
+            : $this->fieldValues()->with('templateField')->get();
+
+        $fieldValuesList->each(function ($fieldValue) use (&$fields) {
+            $name = $fieldValue->templateField->name;
+            $fields[$name] = $this->castFieldValue(
+                $fieldValue->value,
+                $fieldValue->templateField->type
+            );
+        });
 
         return (object) $fields;
     }
