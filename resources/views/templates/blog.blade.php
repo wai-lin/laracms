@@ -32,7 +32,7 @@
         @if($page->field('cover_image'))
             <div class="mb-10 rounded-2xl border-3 border-gray-800 waffle-shadow overflow-hidden">
                 <img 
-                    src="{{ Storage::disk('s3')->url($page->field('cover_image')) }}" 
+                    src="{{ Storage::disk('s3')->temporaryUrl($page->field('cover_image'), now()->addHours(1)) }}" 
                     alt="{{ $page->title }}"
                     class="w-full"
                 >
