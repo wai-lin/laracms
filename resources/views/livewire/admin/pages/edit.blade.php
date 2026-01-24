@@ -7,6 +7,7 @@ use Livewire\Attributes\Title;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 new #[Title('Edit Page')] class extends Component {
     use WithFileUploads;
@@ -130,7 +131,7 @@ new #[Title('Edit Page')] class extends Component {
                             @if (isset($fieldUploads[$field->id]))
                                 <img src="{{ $fieldUploads[$field->id]->temporaryUrl() }}" class="mt-2 h-32 rounded" />
                             @elseif (!empty($fieldValues[$field->id]))
-                                <img src="{{ Storage::disk('s3')->temporaryUrl($fieldValues[$field->id], now()->plus(hours: 1)) }}" class="mt-2 h-32 rounded" />
+                                <img src="{{ Storage::disk('s3')->temporaryUrl($fieldValues[$field->id], now()->addHours(1)) }}" class="mt-2 h-32 rounded" />
                             @endif
                         </div>
                         @break
