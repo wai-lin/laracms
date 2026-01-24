@@ -7,7 +7,7 @@
                 <div class="mb-6">
                     @switch($field->type)
                         @case('image')
-                            <img src="{{ Storage::url($value) }}" alt="{{ $field->label }}" class="rounded-lg max-w-full">
+                            <img src="{{ Storage::disk('s3')->url($value) }}" alt="{{ $field->label }}" class="rounded-lg max-w-full">
                         @break
                         @case('richtext')
                             <div class="prose max-w-none">{!! $value !!}</div>
