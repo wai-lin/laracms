@@ -57,7 +57,7 @@ new #[Title('Create Page')] class extends Component {
         foreach ($template->fields as $field) {
             $value = null;
             if ($field->type === 'image' && isset($this->fieldUploads[$field->id])) {
-                $value = $this->fieldUploads[$field->id]->store('pages', 'public');
+                $value = $this->fieldUploads[$field->id]->store('pages', 's3');
             } elseif ($field->type === 'boolean') {
                 $value = !empty($this->fieldValues[$field->id]) ? '1' : '0';
             } else {

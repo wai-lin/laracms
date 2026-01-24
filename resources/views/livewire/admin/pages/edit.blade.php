@@ -65,9 +65,9 @@ new #[Title('Edit Page')] class extends Component {
                 // Delete old image if exists
                 $oldValue = $this->page->fieldValues->where('page_template_field_id', $field->id)->first();
                 if ($oldValue?->value) {
-                    Storage::disk('s3')->disk('public')->delete($oldValue->value);
+                    Storage::disk('s3')->delete($oldValue->value);
                 }
-                $value = $this->fieldUploads[$field->id]->store('pages', 'public');
+                $value = $this->fieldUploads[$field->id]->store('pages', 's3');
             } elseif ($field->type === 'boolean') {
                 $value = !empty($this->fieldValues[$field->id]) ? '1' : '0';
             }
@@ -130,7 +130,7 @@ new #[Title('Edit Page')] class extends Component {
                             @if (isset($fieldUploads[$field->id]))
                                 <img src="{{ $fieldUploads[$field->id]->temporaryUrl() }}" class="mt-2 h-32 rounded" />
                             @elseif (!empty($fieldValues[$field->id]))
-                                <img src="{{ Storage::disk('s3')->url($fieldValues[$field->id]) }}" class="mt-2 h-32 rounded" />
+                                <img src="{{ Storage::disk('s3')->temporaryUrl($fieldValues[$field->id], now()->plus(hours: 1)) }}" class="mt-2 h-32 rounded" />
                             @endif
                         </div>
                         @break
