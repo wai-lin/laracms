@@ -1,3 +1,5 @@
+<?php use App\Helpers\StorageHelper; ?>
+
 <x-layouts.waffle :title="$page->title" :meta_description="$page->meta_description">
     <article class="max-w-3xl mx-auto">
         {{-- Back link --}}

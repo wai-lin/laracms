@@ -1,3 +1,5 @@
+<?php use App\Helpers\StorageHelper; ?>
+
 <x-layouts.waffle title="Blogs">
     {{-- Header --}}
     <div class="text-center mb-12">
