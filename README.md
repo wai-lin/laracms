@@ -2,6 +2,8 @@
 
 A simple, developer-friendly headless CMS built with Laravel 12, Livewire Volt, and Flux UI.
 
+[Uptime Status Page](https://stats.uptimerobot.com/0ADlv4KAe6)
+
 ## Tech Stack
 
 - **Framework**: Laravel 12
