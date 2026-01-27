@@ -15,6 +15,8 @@ A simple, developer-friendly headless CMS built with Laravel 12, Livewire Volt, 
 
 | Service | Purpose | Tier |
 |---------|---------|------|
+| [DigitalOcean Storage](https://www.digitalocean.com/products/spaces) | Image & backup storage | 5$ / month |
+| [Resend](https://resend.com) | Transactional email service | Free tier available |
 | [Sentry](https://sentry.io) | Error monitoring & email alerts | Free |
 | [Umami Cloud](https://cloud.umami.is) | Privacy-friendly analytics | Free |
 | [UptimeRobot](https://uptimerobot.com) | Uptime monitoring & alerts | Free |
@@ -45,7 +47,10 @@ php artisan key:generate
 
 # Configure .env
 # - Set ADMIN_EMAIL, ADMIN_NAME, ADMIN_PASSWORD
+# - Set AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION (for S3)
+# - Set RESEND_API_KEY (for email service)
 # - Set SENTRY_LARAVEL_DSN (optional for local)
+# - Set BACKUP_ARCHIVE_PASSWORD (optional for backup encryption)
 
 # Database setup
 php artisan migrate --seed
@@ -74,6 +79,21 @@ php artisan pages:publish-scheduled
 * * * * * cd /path-to-project && php artisan schedule:run >> /dev/null 2>&1
 ```
 
+### Backups (automated to S3)
+
+```bash
+# Trigger a backup manually
+php artisan backup:run
+
+# Monitor backup health
+php artisan backup:monitor
+
+# Clean up old backups
+php artisan backup:clean
+```
+
+Backups are automatically stored on S3 and include the database and application files. See `config/backup.php` for detailed backup configuration.
+
 ## Features Checklist
 
 ### Core CMS
@@ -84,6 +104,8 @@ php artisan pages:publish-scheduled
 - [x] Page statuses: draft, published, scheduled
 - [x] Settings management (key/value with caching)
 - [x] Rich text editor (Quill.js) with dark mode support
+- [x] Image storage via Amazon S3
+- [x] Automatic backups to S3 with scheduled cleanup
 
 ### Developer SDK
 
@@ -116,6 +138,9 @@ php artisan pages:publish-scheduled
 
 ### Planned Features
 
+- [ ] Quote API integration for auto-generating page titles and meta descriptions
+- [ ] Headless CMS API for using the platform as a backend service
+- [ ] Add testing on major features
 - [ ] Repeater fields (arrays of sub-fields)
 - [ ] Multi-language support (locale-based pages)
 - [ ] SEO preview component (Google, Facebook, Twitter, LinkedIn, Instagram)
@@ -126,6 +151,8 @@ php artisan pages:publish-scheduled
 app/
 ├── Console/Commands/
 │   └── PublishScheduledPages.php   # Scheduled publishing command
+├── Helpers/
+│   └── StorageHelper.php           # S3 URL management with caching
 ├── Http/Controllers/
 │   └── PageController.php          # Frontend page rendering
 ├── Models/
