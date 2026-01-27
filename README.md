@@ -135,6 +135,7 @@ Backups are automatically stored on S3 and include the database and application 
 - [x] Umami analytics
 - [x] UptimeRobot monitoring
 - [x] Scheduled page auto-publishing (cron)
+- [x] Scheduled daily backup (cron)
 
 ### Planned Features
 
