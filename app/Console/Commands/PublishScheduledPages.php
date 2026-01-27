@@ -30,6 +30,7 @@ class PublishScheduledPages extends Command
             ->where('published_at', '<=', now())
             ->update(['status' => 'published']);
         $this->info("Published {$count} scheduled page(s).");
+
         return Command::SUCCESS;
     }
 }
