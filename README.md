@@ -107,7 +107,7 @@ Backups are automatically stored on S3 and include the database and application 
 - [x] Image storage via Amazon S3
 - [x] Automatic backups to S3 with scheduled cleanup
 
-### Developer SDK
+### Developer SDK & API
 
 - [x] `Page::byTemplate('blog', 10)` - Get paginated pages by template
 - [x] `Page::bySlug('about')` - Get single published page
@@ -115,6 +115,7 @@ Backups are automatically stored on S3 and include the database and application 
 - [x] `$page->field('body')` - Get single field value
 - [x] `$page->fields` - Get all fields as object
 - [x] Scopes: `published()`, `draft()`, `scheduled()`, `ordered()`
+- [x] Headless CMS API for using the platform as a backend service `/docs/api`
 
 ### Frontend
 
@@ -140,7 +141,6 @@ Backups are automatically stored on S3 and include the database and application 
 
 ### Planned Features
 
-- [ ] Headless CMS API for using the platform as a backend service
 - [ ] Add testing on major features
 - [ ] Repeater fields (arrays of sub-fields)
 - [ ] Multi-language support (locale-based pages)

@@ -10,7 +10,7 @@ use App\Models\Page;
 class PageController extends Controller
 {
     /**
-     * List all published pages (paginated).
+     * List all published pages.
      * 
      * GET /api/pages
      * Query params:
