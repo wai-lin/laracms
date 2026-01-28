@@ -41,14 +41,14 @@ class PageResource extends JsonResource
     {
         $fields = [];
 
-        if (!$this->relationLoaded('fieldValues')) {
+        if (! $this->relationLoaded('fieldValues')) {
             return (object) $fields;
         }
 
         foreach ($this->fieldValues as $fieldValue) {
             $templateField = $fieldValue->templateField;
-            
-            if (!$templateField) {
+
+            if (! $templateField) {
                 continue;
             }
 

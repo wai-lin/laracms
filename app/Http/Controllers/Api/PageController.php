@@ -11,7 +11,7 @@ class PageController extends Controller
 {
     /**
      * List all published pages.
-     * 
+     *
      * GET /api/pages
      * Query params:
      *   - per_page: int (default: 15)
@@ -21,7 +21,7 @@ class PageController extends Controller
     {
         $perPage = request()->integer('per_page', 15);
         $template = request()->string('template')->toString();
-        
+
         $query = Page::published()
             ->with('template')
             ->ordered();
@@ -39,7 +39,7 @@ class PageController extends Controller
 
     /**
      * Get a single published page by slug.
-     * 
+     *
      * GET /api/pages/{slug}
      */
     public function show(string $slug)
