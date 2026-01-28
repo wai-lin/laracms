@@ -2,6 +2,7 @@
 use App\Models\Page;
 use App\Models\PageTemplate;
 use App\Models\PageFieldValue;
+use App\Services\QuoteService;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\WithFileUploads;
@@ -18,6 +19,23 @@ new #[Title('Create Page')] class extends Component {
     public ?string $published_at = null;
     public array $fieldValues = [];
     public array $fieldUploads = [];
+    public bool $loadingQuote = false;
+
+    public function mount(): void
+    {
+        $this->generateQuoteTitle();
+    }
+
+    public function generateQuoteTitle(): void
+    {
+        $quoteService = new QuoteService();
+        $quote = $quoteService->getRandomQuote();
+        
+        if ($quote) {
+            $this->title = $quote['quote'];
+            $this->slug = Str::slug($this->title);
+        }
+    }
 
     public function updatedTitle(): void
     {
@@ -95,7 +113,24 @@ new #[Title('Create Page')] class extends Component {
         </flux:select>
 
         @if ($page_template_id)
-            <flux:input wire:model.live.debounce.300ms="title" :label="__('Title')" required />
+            <div>
+                <flux:label class="mb-2">{{ __('Title') }} <span class="text-red-500">*</span></flux:label>
+                <div class="flex gap-2">
+                    <flux:input wire:model.live.debounce.300ms="title" class="flex-1" required />
+                    <flux:button 
+                        type="button" 
+                        wire:click="generateQuoteTitle" 
+                        wire:loading.attr="disabled"
+                        variant="filled"
+                        icon="sparkles"
+                        title="{{ __('Generate quote as title') }}"
+                    >
+                        <span wire:loading.remove wire:target="generateQuoteTitle">{{ __('Quote') }}</span>
+                        <span wire:loading wire:target="generateQuoteTitle">...</span>
+                    </flux:button>
+                </div>
+                <flux:description class="mt-1">{{ __('Click the Quote button to get an inspiring quote as your title') }}</flux:description>
+            </div>
             <flux:input wire:model="slug" :label="__('Slug')" required />
             <flux:textarea wire:model="meta_description" :label="__('Meta Description')" rows="2" />
             <flux:select wire:model.live="status" :label="__('Status')">

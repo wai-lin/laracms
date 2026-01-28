@@ -127,6 +127,7 @@ Backups are automatically stored on S3 and include the database and application 
 
 - [x] Templates CRUD with field management
 - [x] Pages CRUD with status/template filtering
+- [x] Quote API integration for auto-generating page titles
 - [x] Sidebar navigation
 
 ### Infrastructure
@@ -139,7 +140,6 @@ Backups are automatically stored on S3 and include the database and application 
 
 ### Planned Features
 
-- [ ] Quote API integration for auto-generating page titles and meta descriptions
 - [ ] Headless CMS API for using the platform as a backend service
 - [ ] Add testing on major features
 - [ ] Repeater fields (arrays of sub-fields)
