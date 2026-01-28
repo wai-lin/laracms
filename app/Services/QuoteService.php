@@ -21,11 +21,11 @@ class QuoteService
         // c =? character count
         // h = pre-formatted HTML quote
         return [
-            'quote' => $quote['q'] ?? "",
-            'author' => $quote['a'] ?? "",
+            'quote' => $quote['q'] ?? '',
+            'author' => $quote['a'] ?? '',
             'author_image' => $quote['i'] ?? null,
             'char_count' => $quote['c'] ?? null,
-            'html' => $quote['h'] ?? "",
+            'html' => $quote['h'] ?? '',
         ];
     }
 
