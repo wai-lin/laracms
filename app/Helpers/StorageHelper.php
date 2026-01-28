@@ -23,9 +23,14 @@ class StorageHelper
         $cacheKey = 'temp_url:'.md5($filePath);
 
         // Cache the URL for expireMinutes - 5 to ensure refresh before actual expiry
-        return Cache::remember($cacheKey, now()->addMinutes($expireMinutes - 5), function () use ($filePath, $expireMinutes) {
-            return Storage::disk('s3')->temporaryUrl($filePath, now()->addMinutes($expireMinutes));
-        });
+        return Cache::remember(
+            $cacheKey,
+            now()->addMinutes($expireMinutes - 5),
+            function () use ($filePath, $expireMinutes) {
+                return Storage::disk('s3')
+                    ->temporaryUrl($filePath, now()->addMinutes($expireMinutes));
+            }
+        );
     }
 
     /**
