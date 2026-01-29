@@ -13,7 +13,7 @@
 
     {{-- Blog Posts Grid --}}
     @php
-        $posts = \App\Models\Page::byTemplate('blog');
+        $posts = \App\Models\Page::byTemplate('blog', 4);
     @endphp
 
     @if($posts->isEmpty())
@@ -69,5 +69,12 @@
                 </a>
             @endforeach
         </div>
+
+        {{-- Pagination --}}
+        @if($posts->hasPages())
+            <div class="mt-12">
+                {{ $posts->links() }}
+            </div>
+        @endif
     @endif
 </x-layouts.waffle>
