@@ -67,6 +67,60 @@ npm run dev
 
 # Access the site via Laravel Herd
 # e.g., http://constantcms.test
+
+# Admin panel: http://constantcms.test/dashboard (login required)
+# API docs: http://constantcms.test/docs/api
+```
+
+### Testing
+
+```bash
+# Run all tests
+php artisan test
+
+# Run specific test file
+php artisan test tests/Feature/Api/PagesTest.php
+
+# Run with coverage
+php artisan test --coverage
+```
+
+### API Usage
+
+**List published pages** (with pagination & filtering):
+```bash
+GET /api/pages                                    # All published pages
+GET /api/pages?per_page=10                       # Custom pagination
+GET /api/pages?template=blog                     # Filter by template
+GET /api/pages?status=draft&template=blog        # Multiple filters
+```
+
+**Get single page**:
+```bash
+GET /api/pages/{slug}                            # Get page with all fields
+```
+
+**Response example**:
+```json
+{
+  "data": {
+    "id": 1,
+    "title": "My Blog Post",
+    "slug": "my-blog-post",
+    "meta_description": "...",
+    "status": "published",
+    "published_at": "2026-01-28T10:00:00+00:00",
+    "template": {
+      "id": 1,
+      "name": "Blog",
+      "slug": "blog"
+    },
+    "fields": {
+      "body": "<p>Rich HTML content</p>",
+      "is_featured": true
+    }
+  }
+}
 ```
 
 ### Scheduler (for scheduled pages)
@@ -115,7 +169,11 @@ Backups are automatically stored on S3 and include the database and application 
 - [x] `$page->field('body')` - Get single field value
 - [x] `$page->fields` - Get all fields as object
 - [x] Scopes: `published()`, `draft()`, `scheduled()`, `ordered()`
-- [x] Headless CMS API for using the platform as a backend service `/docs/api`
+- [x] **Headless CMS API** for consuming content:
+  - `GET /api/pages` - List published pages with filtering
+  - `GET /api/pages/{slug}` - Get single page with all fields
+  - Query params: `per_page`, `template`, `status`
+  - OpenAPI documentation at `/docs/api`
 
 ### Frontend
 
@@ -123,12 +181,13 @@ Backups are automatically stored on S3 and include the database and application 
 - [x] Template-specific views with fallback
 - [x] Custom 404 page
 - [x] Waffle Studio theme (example implementation)
+- [x] Blog page with pagination
 
 ### Admin Panel
 
 - [x] Templates CRUD with field management
 - [x] Pages CRUD with status/template filtering
-- [x] Quote API integration for auto-generating page titles
+- [x] Quote API integration (ZenQuotes) for auto-generating page titles
 - [x] Sidebar navigation
 
 ### Infrastructure
@@ -138,10 +197,18 @@ Backups are automatically stored on S3 and include the database and application 
 - [x] UptimeRobot monitoring
 - [x] Scheduled page auto-publishing (cron)
 - [x] Scheduled daily backup (cron)
+- [x] Timezone support (configurable, defaults to Asia/Bangkok)
+
+### Testing
+
+- [x] Smoke tests for major pages (welcome, blogs, blog detail)
+- [x] Comprehensive API tests for page endpoints
+- [x] Auth tests (with Fortify)
+- [x] Two-factor authentication tests
+- [x] Settings tests
 
 ### Planned Features
 
-- [ ] Add testing on major features
 - [ ] Repeater fields (arrays of sub-fields)
 - [ ] Multi-language support (locale-based pages)
 - [ ] SEO preview component (Google, Facebook, Twitter, LinkedIn, Instagram)
@@ -154,14 +221,22 @@ app/
 │   └── PublishScheduledPages.php   # Scheduled publishing command
 ├── Helpers/
 │   └── StorageHelper.php           # S3 URL management with caching
-├── Http/Controllers/
-│   └── PageController.php          # Frontend page rendering
+├── Http/
+│   ├── Controllers/
+│   │   ├── PageController.php      # Frontend page rendering
+│   │   └── Api/
+│   │       └── PageController.php  # API for content consumption
+│   └── Resources/
+│       ├── PageResource.php        # Full page response with fields
+│       └── PageIndexResource.php   # List page response
 ├── Models/
 │   ├── Page.php                    # Page model with SDK methods
 │   ├── PageTemplate.php
 │   ├── PageTemplateField.php
 │   ├── PageFieldValue.php
 │   └── Setting.php
+├── Services/
+│   └── QuoteService.php            # ZenQuotes API integration
 
 resources/views/
 ├── components/
@@ -171,13 +246,29 @@ resources/views/
 │   │   └── waffle.blade.php        # Waffle Studio theme layout
 │   └── richtext-editor.blade.php   # Quill editor component
 ├── livewire/admin/
-│   ├── pages/                      # Pages CRUD
-│   └── templates/                  # Templates CRUD
+│   ├── pages/                      # Pages CRUD (Volt components)
+│   └── templates/                  # Templates CRUD (Volt components)
 ├── templates/                      # Frontend page templates
 │   ├── default.blade.php
 │   └── blog.blade.php
-└── errors/
-    └── 404.blade.php
+├── errors/
+│   └── 404.blade.php
+└── blogs.blade.php                 # Blog listing page
+
+tests/
+├── Feature/
+│   ├── PagesTest.php               # Smoke tests for public pages
+│   ├── Api/
+│   │   └── PagesTest.php           # API endpoint tests
+│   ├── Auth/                       # Authentication tests
+│   └── Settings/                   # Settings tests
+└── Unit/
+
+routes/
+├── web.php                         # Web routes
+├── api.php                         # API routes
+├── console.php                     # Scheduler & commands
+└── settings.php                    # Settings routes
 ```
 
 ## License
